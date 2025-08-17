@@ -22,7 +22,7 @@ Here’s a complete, step-by-step breakdown to automate the detection of S3 buck
   Click Create function.
   Select Author from scratch.
   Enter a name (e.g., UnencryptedS3BucketsMonitor).
-  Choose Python 3.x runtime.
+  Choose Python 3.13 runtime.
   Assign the IAM role you just created (LambdaS3MonitorRole).
   Click Create function.
 
