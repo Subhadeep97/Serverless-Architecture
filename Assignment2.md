@@ -1,3 +1,5 @@
+Step-by-Step Guide: Automated S3 Bucket Cleanup Using AWS Lambda and Boto3
+
 1. S3 Bucket Setup
     Open your browser (Safari/Chrome) on MacBook Air and log in to the AWS Console.
     Search for "S3" and open the S3 dashboard.
