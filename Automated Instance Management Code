@@ -1,0 +1,30 @@
+** The Python Script for Lambda Function ** 
+
+
+
+import boto3
+
+def lambda_handler(event, context):
+    ec2 = boto3.resource('ec2')
+    affected_instances = {"Auto-Stop": [], "Auto-Start": []}
+    
+    # Find Auto-Stop instances
+    stop_instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag:Action', 'Values': ['Auto-Stop']}]
+    )
+    for instance in stop_instances:
+        if instance.state['Name'] != 'stopped':
+            instance.stop()
+            affected_instances["Auto-Stop"].append(instance.id)
+    
+    # Find Auto-Start instances
+    start_instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag:Action', 'Values': ['Auto-Start']}]
+    )
+    for instance in start_instances:
+        if instance.state['Name'] != 'running':
+            instance.start()
+            affected_instances["Auto-Start"].append(instance.id)
+    
+    print("Stopped Instances:", affected_instances["Auto-Stop"])
+    print("Started Instances:", affected_instances["Auto-Start"])
