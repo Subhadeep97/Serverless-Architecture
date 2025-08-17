@@ -1,0 +1,33 @@
+** the python script for the lambda function **
+
+
+import boto3
+from datetime import datetime, timezone, timedelta
+
+def lambda_handler(event, context):
+    bucket_name = 'Subhadeep-Bucket'  # Replace with your bucket name, in my case i have put my bucket name 
+    days_threshold = 30
+
+    s3 = boto3.client('s3')
+    deleted_files = []
+
+    # List all objects in the bucket
+    response = s3.list_objects_v2(Bucket=bucket_name)
+    if 'Contents' in response:
+        for obj in response['Contents']:
+            key = obj['Key']
+            last_modified = obj['LastModified']
+
+            # Calculate file age
+            file_age = (datetime.now(timezone.utc) - last_modified).days
+
+            # Delete if older than 30 days
+            if file_age > days_threshold:
+                s3.delete_object(Bucket=bucket_name, Key=key)
+                deleted_files.append(key)
+
+    print("Deleted files:", deleted_files)
+    return {
+        'statusCode': 200,
+        'body': f"Deleted files: {deleted_files}"
+    }
