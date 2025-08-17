@@ -1,0 +1,30 @@
+** python script for the lambda function **
+
+import boto3
+
+def lambda_handler(event, context):
+    s3 = boto3.client('s3')
+    unencrypted_buckets = []
+
+    # List all buckets
+    buckets = s3.list_buckets()
+    for bucket in buckets['Buckets']:
+        bucket_name = bucket['Name']
+        try:
+            enc = s3.get_bucket_encryption(Bucket=bucket_name)
+            # If encryption config exists, bucket is encrypted
+            rules = enc['ServerSideEncryptionConfiguration']['Rules']
+            if not rules:
+                unencrypted_buckets.append(bucket_name)
+        except s3.exceptions.ClientError as e:
+            # If error code is ServerSideEncryptionConfigurationNotFoundError, bucket is not encrypted
+            if e.response['Error']['Code'] == 'ServerSideEncryptionConfigurationNotFoundError':
+                unencrypted_buckets.append(bucket_name)
+            else:
+                print(f"Error checking bucket {bucket_name}: {e}")
+
+    print("Unencrypted buckets:", unencrypted_buckets)
+    return {
+        'statusCode': 200,
+        'body': f"Unencrypted buckets: {unencrypted_buckets}"
+    }
