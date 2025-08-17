@@ -1,3 +1,5 @@
+Step-by-Step Guide: Automated EC2 Instance Management with AWS Lambda and Boto3
+
 1. Setup: Create EC2 Instances and Apply Tags
 
 A. Log In and Navigate to EC2
@@ -7,8 +9,8 @@ A. Log In and Navigate to EC2
 B. Launch Two EC2 Instances
   In the AWS Console, search "EC2" and open the EC2 Dashboard.
   Click "Launch instances".
-  Choose the Amazon Linux 2 AMI (free tier eligible) or any other suitable AMI.
-  Select t2.micro as the instance type (free tier).
+  Choose the Amazon Linux 2 AMI or any other suitable AMI.
+  Select t2.micro as the instance type.
   Click Next: Configure Instance Details.
   Continue through the steps > Add Tags.
 
@@ -35,7 +37,7 @@ C. Attach Permission Policy
   Search for and add the policy: AmazonEC2FullAccess.
   Click Next: Tags (optional).
   Click Next: Review.
-  Give the role a name (e.g., LambdaEC2ManagementRole).
+  Give the role a name (my role - LambdaEC2ManagementRole).
   Click Create role.
 
 3. Create Lambda Function
