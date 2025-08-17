@@ -1,0 +1,27 @@
+** python script for the Lambda function **
+
+
+import boto3
+from datetime import datetime
+
+def lambda_handler(event, context):
+    ec2 = boto3.client('ec2')
+    
+    # Extract Instance ID from the event
+    instance_id = event['detail']['instance-id']
+    
+    # Prepare tags: Current Date (YYYY-MM-DD) and a Custom Tag
+    tags = [
+        {
+            'Key': 'LaunchDate',
+            'Value': datetime.utcnow().strftime('%Y-%m-%d')
+        },
+        {
+            'Key': 'Owner',           # Change 'Owner' to any custom key
+            'Value': 'AutoTagged'     # Change the value as desired, in my case i have put my name 'Subhadeep' in place of AutoTagged
+        }
+    ]
+    
+    # Tag the newly launched instance
+    ec2.create_tags(Resources=[instance_id], Tags=tags)
+    print(f"Tagged instance {instance_id} with {tags}")
