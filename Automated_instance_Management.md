@@ -70,4 +70,11 @@ B. Verify Instance State Changes
   Confirm that:
   The instance tagged Auto-Stop is stopped.
   The instance tagged Auto-Start is running.
+
+
+
+       
+
+
+  
    
